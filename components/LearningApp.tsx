@@ -5,7 +5,6 @@ import { Header } from './Header';
 import { LessonViewer } from './LessonViewer';
 import { CodeWorkspace } from './CodeWorkspace';
 import { NavigationFooter } from './NavigationFooter';
-import { Chatbot } from './Chatbot';
 import { useLesson } from '@/lib/hooks/useLesson';
 import { useCodeExecution } from '@/lib/hooks/useCodeExecution';
 import type { User } from '@supabase/supabase-js';
@@ -44,15 +43,6 @@ export default function LearningApp({ user }: LearningAppProps) {
     runCode(currentCode);
   };
 
-  // Prepare context for chatbot
-  const chatbotContext = {
-    currentLessonTitle: currentLesson.title,
-    currentLessonTheory: currentLesson.theory,
-    currentCode: currentCode,
-    error: executionState.error,
-  };
-
-
   return (
     <div className="h-screen flex flex-col bg-gradient-to-br from-blue-50 to-purple-50">
       <Header user={user} />
@@ -83,9 +73,6 @@ export default function LearningApp({ user }: LearningAppProps) {
         isLastLesson={isLastLesson}
         canProceed={isCurrentQuestionAnswered}
       />
-
-      {/* Chatbot Assistant */}
-      <Chatbot context={chatbotContext} />
     </div>
   );
 }
