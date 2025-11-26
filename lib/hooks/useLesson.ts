@@ -9,22 +9,33 @@ import { lessons } from '../data/lessons';
 export function useLesson() {
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0);
   const [currentCode, setCurrentCode] = useState(lessons[0].code);
+  const [answeredQuestions, setAnsweredQuestions] = useState<Set<number>>(new Set());
 
   const currentLesson: Lesson = lessons[currentLessonIndex];
   const totalLessons = lessons.length;
   const isFirstLesson = currentLessonIndex === 0;
   const isLastLesson = currentLessonIndex === lessons.length - 1;
+  const isCurrentQuestionAnswered = answeredQuestions.has(currentLessonIndex);
 
   // Update code when lesson changes
   useEffect(() => {
     setCurrentCode(currentLesson.code);
   }, [currentLessonIndex, currentLesson.code]);
 
+  const markQuestionAnswered = useCallback(() => {
+    setAnsweredQuestions((prev) => {
+      const newSet = new Set(prev);
+      newSet.add(currentLessonIndex);
+      return newSet;
+    });
+  }, [currentLessonIndex]);
+
   const goToNextLesson = useCallback(() => {
-    if (!isLastLesson) {
+    // Only allow navigation if question is answered
+    if (!isLastLesson && isCurrentQuestionAnswered) {
       setCurrentLessonIndex((prev) => prev + 1);
     }
-  }, [isLastLesson]);
+  }, [isLastLesson, isCurrentQuestionAnswered]);
 
   const goToPreviousLesson = useCallback(() => {
     if (!isFirstLesson) {
@@ -50,6 +61,8 @@ export function useLesson() {
     totalLessons,
     isFirstLesson,
     isLastLesson,
+    isCurrentQuestionAnswered,
+    markQuestionAnswered,
     goToNextLesson,
     goToPreviousLesson,
     goToLesson,

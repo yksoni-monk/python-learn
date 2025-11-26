@@ -12,6 +12,13 @@ export interface Lesson {
   code: string;
   /** Brief explanation/tip about the concept */
   explanation: string;
+  /** Question to test understanding - required for all lessons */
+  question: {
+    text: string;
+    options: string[];
+    correctAnswer: number; // Index of correct answer (0-based)
+    explanation: string;
+  };
   /** Optional: Difficulty level (for future filtering) */
   difficulty?: 'beginner' | 'intermediate' | 'advanced';
   /** Optional: Tags for categorization */

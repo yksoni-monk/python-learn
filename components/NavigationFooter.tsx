@@ -11,6 +11,7 @@ interface NavigationFooterProps {
   onNext: () => void;
   isFirstLesson: boolean;
   isLastLesson: boolean;
+  canProceed: boolean;
 }
 
 /**
@@ -24,7 +25,10 @@ export function NavigationFooter({
   onNext,
   isFirstLesson,
   isLastLesson,
+  canProceed,
 }: NavigationFooterProps) {
+  const isNextDisabled = isLastLesson || !canProceed;
+
   return (
     <div className="bg-white border-t-4 border-purple-400 p-4 flex justify-between items-center">
       <button
@@ -44,12 +48,13 @@ export function NavigationFooter({
 
       <button
         onClick={onNext}
-        disabled={isLastLesson}
+        disabled={isNextDisabled}
         className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition ${
-          isLastLesson
+          isNextDisabled
             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
             : 'bg-purple-500 hover:bg-purple-600 text-white'
         }`}
+        title={!canProceed ? 'Answer the question to proceed' : ''}
       >
         Next
         <ChevronRight size={20} />

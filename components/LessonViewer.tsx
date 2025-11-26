@@ -2,16 +2,19 @@
 
 import React from 'react';
 import { Lesson } from '@/lib/types/lesson';
+import { LessonQuestion } from './LessonQuestion';
 
 interface LessonViewerProps {
   lesson: Lesson;
+  onQuestionAnswered: () => void;
+  isQuestionAnswered: boolean;
 }
 
 /**
  * Component for displaying lesson theory and explanation
  * Shows the educational content to help kids understand concepts
  */
-export function LessonViewer({ lesson }: LessonViewerProps) {
+export function LessonViewer({ lesson, onQuestionAnswered, isQuestionAnswered }: LessonViewerProps) {
   return (
     <div className="w-1/2 bg-white p-8 overflow-y-auto border-r-4 border-purple-200">
       <h2 className="text-2xl font-bold text-purple-700 mb-4">{lesson.title}</h2>
@@ -25,6 +28,13 @@ export function LessonViewer({ lesson }: LessonViewerProps) {
       <div className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-400">
         <p className="text-blue-800 font-medium">💡 {lesson.explanation}</p>
       </div>
+
+      {/* Lesson Question */}
+      <LessonQuestion
+        question={lesson.question}
+        onAnswerCorrect={onQuestionAnswered}
+        isAnswered={isQuestionAnswered}
+      />
     </div>
   );
 }
